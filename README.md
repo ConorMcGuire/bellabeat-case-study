@@ -11,10 +11,11 @@ To guide myself in this analysis, I will ask myself:
 2. How can my insights drive business decisions?
 
 ## Business Task
-How can Bellabeat use smart device usage trends to inform their marketing for the Leaf fitness tracker.
+Analyze Fitbit fitness tracker data to identify trends and use these insights to recommend a marketing strategy for Bellabeat's Leaf product.
 
 ## Stakeholders
-- Bellabeat executive team (Urška Sršen, Sando Mur).
+- Urška Sršen (Bellabeat CCO).
+- Sando Mur (Bellabeat co-founder).
 - Bellabeat marketing team.
 
 ## Key Questions
