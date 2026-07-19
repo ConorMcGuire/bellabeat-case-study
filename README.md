@@ -23,17 +23,27 @@ Analyze Fitbit fitness tracker data to identify trends and use these insights to
 - How do these trends apply to Bellabeat's Leaf users?
 - How can Bellabeat leverage these trends to shape the marketing strategy for the Leaf?
 
+</details>
+
 <details>
 <summary><h2>Phase 2: Prepare</h2></summary>
 Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset she thinks will be useful for answering the business question:
 [FitBit Fitness Tracker Data (Kaggle)](https://www.kaggle.com/datasets/arashnic/fitbit)
 
 ### Data Organization
-The dataset is split into separate CSV files for activity, sleep, heart rate, calories and step count.
+The dataset is split into separate CSV files for activity, sleep, heart rate, calories and step count. It contains data on 30 users between March and May of 2016.
 
 ### Limitations
 - Only 30 users - This sample size is not large enough to be representative of the population.
 - No demographic data - Factors like age and gender would give context to the trends and help the marketing strategy target the right customers.
 - Only two months of data - Examining data from a longer time period would give more insight into how trends are developing in fitness tracker usage.
+
+</details>
+
+<details>
+<summary><h2>Phase 3: Process</h2></summary>
+The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables. This makes SQL a more appropriate tool than spreadsheets in this instance.
+
+
 
 </details>
