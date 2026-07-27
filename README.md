@@ -42,9 +42,10 @@ The dataset is split into separate CSV files for activity, sleep, heart rate, ca
 
 <details>
 <summary><h2>Phase 3: Process</h2></summary>
-The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables. This makes SQL a more appropriate tool than spreadsheets in this instance.
+### Tools Used
+The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables. This makes SQL a more appropriate tool than spreadsheets in this instance. I will be using BigQuery as my SQL environment.
 
-To begin, I imported the data from the CSV files into BigQuery so I could analyze it with SQL. Big Query did not recognize the "Time" value of the "heartrate_seconds_merged" dataset, and imported it as a string instead. I used the following query to parse the string as a corrected DATETIME value, then add the new values to a cleaned table.
+To begin, I imported the data from the CSV files into BigQuery so I could analyze it with SQL. Big Query did not automatically recognize the "Time" value of the "heartrate_seconds_merged" dataset, and imported it as a string instead. I used the following query to parse the string as a corrected DATETIME value, then add the new values to a cleaned table.
 
 ```
 CREATE TABLE IF NOT EXISTS `bellabeat-analysis-502600.fitbit_fitness_tracker.heartrates_cleaned` AS
