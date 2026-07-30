@@ -50,13 +50,13 @@ The process phase involves cleaning and transforming the data. For this I'll be 
 To begin, I imported the data from the CSV files into BigQuery so I could analyze it with SQL. Big Query did not automatically recognize the "Time" column of some of the datasets, and imported it as a string instead. I used the following query to parse the string as a corrected DATETIME value, then add the new values to a cleaned table. The same query was repeated on all datsets where "Time" was not automatically recognized as a datetime field in BigQuery.
 
 ```
-CREATE TABLE IF NOT EXISTS `bellabeat-analysis-502600.fitbit_fitness_tracker.heartrates_cleaned` AS
+CREATE TABLE IF NOT EXISTS `bellabeat-analysis-502600.fitbit_fitness_tracker.heartrate_cleaned` AS
   SELECT
     Id,
     PARSE_DATETIME('%m/%d/%Y %I:%M:%S %p', Time) AS Time,
     Value
   FROM
-    `bellabeat-analysis-502600.fitbit_fitness_tracker.heartrates_1`
+    `bellabeat-analysis-502600.fitbit_fitness_tracker.heartrate`
 ```
 
 Next I ran the following query to get a brief overview of each table:
