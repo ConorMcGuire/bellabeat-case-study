@@ -351,3 +351,135 @@ LEFT JOIN `fitbit_fitness_tracker.sleep` s
 </details>
 
 </details>
+
+<details>
+<summary><h2>Phase 4: Analyze</h2></summary>
+
+#### User Engagement
+To begin my analysis, I wanted to look further into the user_engagement table I created in the previous phase.
+First, I wanted to understand the overall level of engagement across all users in the data.
+```
+-- Engagement distribution
+SELECT
+  id,
+  days_logged,
+  days_logged_percentage,
+  CASE
+    WHEN days_logged_percentage >= 0.75 THEN 'High'
+    WHEN days_logged_percentage >= 0.4 THEN 'Medium'
+    ELSE 'Low'
+  END AS engagement_tier
+FROM `fitbit_fitness_tracker.user_engagement`
+ORDER BY days_logged_percentage DESC;
+
+-- Count how many users per bucket (summary of above query)
+SELECT
+  CASE
+    WHEN days_logged_percentage >= 0.75 THEN 'High'
+    WHEN days_logged_percentage >= 0.4 THEN 'Medium'
+    ELSE 'Low'
+  END AS engagement_tier,
+  COUNT(*) AS num_users
+FROM `fitbit_fitness_tracker.user_engagement`
+GROUP BY engagement_tier
+ORDER BY engagement_tier;
+```
+ 
+From these results, I could see that 23 of the 33 total users had a high engagement with the fitness tracker (Above 75%). 9 users had a medium level of engagement with the fitness tracker. This bucket was defined as being between 40% and 75%. However, by looking at the results of the first query, nobody in the medium bucket had engagement below 55%. There was only 1 user that fell into the low engagement category (Below 40%). From the results we can see that this user only logged 3 days over the course of the month covered by the data. I was curious about this user, so I ran another query to look further into their logging history.
+```
+-- Check whether the low-engagement user's activity is clustered at the start (early dropout) or spread out
+SELECT date, steps, activity_level
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE id = 4057192912
+ORDER BY date;
+```
+From these results we can see that the low engagement user only logged on the 12th, 13th and 15th of April. These dates are right at the beginning of the date range for this dataset. This indicates that this user dropped out of the tracking early, rather than indicating sporadic usage over a long term, such as logging once per week. This could be worth flagging as a user retention issue, however with only one user exhibiting this behaviour, it is not enough to generalize.
+
+#### Activity Patterns
+Next, I wanted to analyze the activity patterns of users using the daily_summary table I created in the process phase.
+```
+-- Number of days for each activity level
+SELECT
+  activity_level,
+  COUNT(*) AS num_days,
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 1) AS pct_of_days
+FROM `fitbit_fitness_tracker.daily_summary`
+GROUP BY activity_level
+ORDER BY num_days DESC;
+
+-- Weekday vs weekend
+SELECT
+  day_type,
+  ROUND(AVG(steps), 0) AS avg_steps,
+  ROUND(AVG(total_active_minutes), 1) AS avg_active_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary`
+GROUP BY day_type;
+
+```
+Here are the results of the first query:
+ 
+As we can see, the categories with the highest percentage of days are Very Active and Sedentary, the two extremes of the scale. This suggests that users mostly have days where they do lots of activity or very little. The “in between” categories of Lightly Active and Fairly Active have far less representation.
+
+Here are the results of the second query:
+ 
+From these results, we can see that weekends and weekdays have almost identical average step counts and average active minutes across all users. This was quite a surprise to me, as before running the query I expected users to be more active on the weekends when most people are off work and have time for exercise.
+
+#### Activity-Sleep Correlation
+I want to investigate the correlation between activity levels and sleep. My assumption is that users who are more active will have better sleep efficiency.
+```
+SELECT
+  CORR(total_active_minutes, sleep_efficiency) AS corr_activeminutes_efficiency,
+  CORR(steps, sleep_efficiency) AS corr_steps_efficiency,
+  CORR(total_active_minutes, sleep_minutes) AS corr_activeminutes_sleepminutes,
+  COUNT(*) AS n
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE sleep_efficiency IS NOT NULL;
+
+SELECT
+  activity_level,
+  ROUND(AVG(sleep_efficiency), 3) AS avg_sleep_efficiency,
+  ROUND(AVG(sleep_minutes), 0) AS avg_sleep_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE sleep_efficiency IS NOT NULL
+GROUP BY activity_level
+ORDER BY avg_sleep_efficiency DESC;
+```
+Here are the results of the first query:
+ 
+Once again, the results go against my expectations. Here we see that all correlations are mostly negligible (~0.04, ~0.11, ~0.07). This indicates that activity level doesn’t have a correlation with sleep based on our dataset. Note: n = 410 because the query specifies “WHERE sleep_efficiency IS NOT NULL”. Since the daily_summary table summarizes data from the activity table’ s 33 users with the sleep table’s 24 users, there are null rows for any user who has activity data but no sleep data.
+
+Here are the results of the second query:
+ 
+And as above, the results do not show any improvement in sleep efficiency on a day where a user is more active. In fact, the “Very Active” days have the lowest sleep efficiency, at 0.902. However, even this is an insignificant difference compared to the other activity levels. With these results I’m confident that activity level does not predict sleep efficiency.
+
+#### Engagement-Activity Relationship
+Finally, I want to check if users with high engagement are more active. I would assume this is the case as someone who is enthusiastic about fitness will be more active and also more consistent with logging and tracking their activity. 
+```
+-- Does engagement level relate to activity level? i.e. do highly-engaged
+-- users also tend to be more physically active, or is engagement
+-- (logging) independent of actual activity?
+SELECT
+  e.engagement_tier,
+  ROUND(AVG(d.steps), 0) AS avg_steps,
+  ROUND(AVG(d.total_active_minutes), 1) AS avg_active_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary` d
+JOIN (
+  SELECT id,
+    CASE
+      WHEN days_logged_percentage >= 0.75 THEN 'High'
+      WHEN days_logged_percentage >= 0.4 THEN 'Medium'
+      ELSE 'Low'
+    END AS engagement_tier
+  FROM `fitbit_fitness_tracker.user_engagement`
+) e ON d.id = e.id
+GROUP BY e.engagement_tier
+ORDER BY avg_steps DESC;
+```
+Here are the results:
+ 
+From these results we can see that the users with high engagement with logging their activity also have the highest average step count and active minutes count. Medium and low engagement users have noticeably lower activity levels. This shows that user engagement and activity are linked. It is important to note that causation cannot be determined from this data alone. Perhaps highly active users are more motivated to log consistently, or maybe consistent logging may encourage more activity. Either way, this result shows us that user engagement is a metric worth focusing on.
+</details>
+
