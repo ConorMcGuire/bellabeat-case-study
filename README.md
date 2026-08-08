@@ -51,7 +51,9 @@ For this analysis, I used the datasets for daily activity, sleep, weight, heartr
 ### Tools Used
 The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables, some of which have millions of rows. This makes SQL a more appropriate tool than spreadsheets in this instance. I will be using BigQuery as my SQL environment.
 
-#### Data Cleaning
+<details>
+<summary><h3>Data Cleaning</h3></summary>
+  
 To begin, I imported the data from the CSV files into BigQuery so I could analyze it with SQL. Big Query did not automatically recognize the date/time columns of some of the datasets and imported it as a string instead. I used the following query to parse the string as a corrected DATETIME value, then add the corrected values to a new column. 
 ```
 --Add a new empty column called date
@@ -233,15 +235,15 @@ From the results of this query, we can see that some rows are quite close. For s
  
 However, for some rows there is a large difference that cannot be excused as rounding errors. These indicate data quality issues. In these cases, the distance breakdowns may be misrepresented or missing. For cases such as the example below, I will take the total_distance as the correct value.
  
+</details>
 
-
- 
 <details>
 <summary><h3>Data Tranformation</h3></summary>
 
 ### Create Derived Metrics
 Next, I want to use the data to derive some metrics I can use to inform the analysis. Since the Bellabeat Leaf product is the focus of this analysis, I want to inspect metrics relevant to sleep, stress and activity.
 
+#### Sleep Efficiency
 The first metric I want to create is sleep efficiency. This is defined as
 ```
 sleep_minutes / time_in_bed
@@ -257,7 +259,7 @@ SET sleep_efficiency = ROUND(sleep_minutes / time_in_bed, 3)
 --Round for readability
 WHERE time_in_bed > 0;
 ```
-
+#### Activity Table Derived Metrics
 Next up I want to create some derived metrics in the activity table that will help with the analysis later. Specifically, I think being able to compare weekdays vs weekends could be useful to gain insight into activity levels. I also want to create a column to inspect the total activity minutes per day, and to classify activity level by step count.
 ```
 --Add derived columns to the activity table
@@ -291,6 +293,7 @@ SET day_type = CASE
 END
 WHERE TRUE;
 ```
+```
 --Count how many days were logged per user during the date range of the dataset as a measure of user engagement with fitness tracking.
 CREATE OR REPLACE TABLE `fitbit_fitness_tracker.user_engagement` AS
 SELECT
@@ -303,6 +306,7 @@ SELECT
 FROM `fitbit_fitness_tracker.activity`
 GROUP BY id;
 ```
+#### Summary Key Activity and Sleep Metrics
 Finally I decided to create a daily_summary table that contained the key data from the activity and sleep tables.
 ```
 --Create a summary table combining activity and sleep data. I expect this to be the most relevant to my analysis, so by creating a joined table now, I don't have to write the join again for every query in the analysis phase.
@@ -322,7 +326,7 @@ FROM `fitbit_fitness_tracker.activity` a
 LEFT JOIN `fitbit_fitness_tracker.sleep` s
   ON a.id = s.id AND a.date = s.date;
 ```
-
+</details>
 
 </details>
 
