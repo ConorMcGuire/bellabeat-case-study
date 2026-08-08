@@ -384,7 +384,8 @@ FROM `fitbit_fitness_tracker.user_engagement`
 GROUP BY engagement_tier
 ORDER BY engagement_tier;
 ```
- 
+ <img width="504" height="164" alt="image" src="https://github.com/user-attachments/assets/3b5e00c3-27c7-43a3-9028-89b0604b25ec" />
+
 From these results, I could see that 23 of the 33 total users had a high engagement with the fitness tracker (Above 75%). 9 users had a medium level of engagement with the fitness tracker. This bucket was defined as being between 40% and 75%. However, by looking at the results of the first query, nobody in the medium bucket had engagement below 55%. There was only 1 user that fell into the low engagement category (Below 40%). From the results we can see that this user only logged 3 days over the course of the month covered by the data. I was curious about this user, so I ran another query to look further into their logging history.
 ```
 -- Check whether the low-engagement user's activity is clustered at the start (early dropout) or spread out
@@ -418,11 +419,13 @@ GROUP BY day_type;
 
 ```
 Here are the results of the first query:
- 
+ <img width="698" height="209" alt="image" src="https://github.com/user-attachments/assets/a17e83d1-c0dc-4c16-b065-2d3995755255" />
+
 As we can see, the categories with the highest percentage of days are Very Active and Sedentary, the two extremes of the scale. This suggests that users mostly have days where they do lots of activity or very little. The “in between” categories of Lightly Active and Fairly Active have far less representation.
 
 Here are the results of the second query:
- 
+ <img width="892" height="129" alt="image" src="https://github.com/user-attachments/assets/1e28c735-7df5-4e35-b732-af276e708c60" />
+
 From these results, we can see that weekends and weekdays have almost identical average step counts and average active minutes across all users. This was quite a surprise to me, as before running the query I expected users to be more active on the weekends when most people are off work and have time for exercise.
 
 #### Activity-Sleep Correlation
@@ -447,11 +450,13 @@ GROUP BY activity_level
 ORDER BY avg_sleep_efficiency DESC;
 ```
 Here are the results of the first query:
- 
+ <img width="940" height="65" alt="image" src="https://github.com/user-attachments/assets/dd1fde58-4c49-4216-a893-3d4407285c9f" />
+
 Once again, the results go against my expectations. Here we see that all correlations are mostly negligible (~0.04, ~0.11, ~0.07). This indicates that activity level doesn’t have a correlation with sleep based on our dataset. Note: n = 410 because the query specifies “WHERE sleep_efficiency IS NOT NULL”. Since the daily_summary table summarizes data from the activity table’ s 33 users with the sleep table’s 24 users, there are null rows for any user who has activity data but no sleep data.
 
 Here are the results of the second query:
- 
+<img width="894" height="214" alt="image" src="https://github.com/user-attachments/assets/86f00987-ba30-4e0b-9654-8fad2f95944b" />
+
 And as above, the results do not show any improvement in sleep efficiency on a day where a user is more active. In fact, the “Very Active” days have the lowest sleep efficiency, at 0.902. However, even this is an insignificant difference compared to the other activity levels. With these results I’m confident that activity level does not predict sleep efficiency.
 
 #### Engagement-Activity Relationship
@@ -479,7 +484,8 @@ GROUP BY e.engagement_tier
 ORDER BY avg_steps DESC;
 ```
 Here are the results:
- 
+<img width="889" height="164" alt="image" src="https://github.com/user-attachments/assets/0252c2ea-84c4-4646-913e-ec05c4d8c746" />
+
 From these results we can see that the users with high engagement with logging their activity also have the highest average step count and active minutes count. Medium and low engagement users have noticeably lower activity levels. This shows that user engagement and activity are linked. It is important to note that causation cannot be determined from this data alone. Perhaps highly active users are more motivated to log consistently, or maybe consistent logging may encourage more activity. Either way, this result shows us that user engagement is a metric worth focusing on.
 </details>
 
