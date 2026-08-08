@@ -27,6 +27,7 @@ Analyze Fitbit fitness tracker data to identify trends and use these insights to
 
 <details>
 <summary><h2>Phase 2: Prepare</h2></summary>
+  
 Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset she thinks will be useful for answering the business question: [FitBit Fitness Tracker Data (Kaggle)](https://www.kaggle.com/datasets/arashnic/fitbit)
 
 ### Data Organization
