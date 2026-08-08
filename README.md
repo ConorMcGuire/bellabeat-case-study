@@ -46,9 +46,6 @@ For this analysis, I used the datasets for daily activity, sleep, weight, heartr
 <details>
 <summary><h2>Phase 3: Process</h2></summary>
 
-<details>
-<summary><h2>Phase 3: Process</h2></summary>
-
 ### Tools Used
 The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables, some of which have millions of rows. This makes SQL a more appropriate tool than spreadsheets in this instance. I will be using BigQuery as my SQL environment.
 
