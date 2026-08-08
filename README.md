@@ -34,8 +34,8 @@ Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset she think
 The dataset is split into separate CSV files for activity, sleep, heart rate, calories and step count. It contains data on 30 users between March and May of 2016.
 
 ### Limitations
-- Only 30 users - This sample size is not large enough to be representative of the population.
-- No demographic data - Factors like gender would be relevant as Bellabeat's health products are designed for women.
+- Most of the datasets contain data for 33 users. Some datasets only contain data on even fewer users, e.g. the weight data was only present for 8 of the 33, and heartrate for only 14 of the 33. Due to the limited coverage these datasets will be excluded from my analysis.
+- The data does not contain the user's gender. Gender would be relevant as Bellabeat's health products are designed for women.
 - Only two months of data - Examining data from a longer time period would give more insight into how trends are developing in fitness tracker usage.
 
 ### Datasets Used
@@ -232,7 +232,29 @@ ORDER BY
 From the results of this query, we can see that some rows are quite close. For small differences (close to 0.1) we can assume that these are due to floating-point precision errors (rounding errors in calculations), as per the example below. 
  
 However, for some rows there is a large difference that cannot be excused as rounding errors. These indicate data quality issues. In these cases, the distance breakdowns may be misrepresented or missing. For cases such as the example below, I will take the total_distance as the correct value.
- 
+
+#### Check Data Coverage
+I wanted to check how many distinct users were in each table, as a way to check if all users were represented in all tables.
+```
+-- How many distinct users have activity data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.activity`; --Result: 33
+
+-- How many distinct users actually have weight data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.weight`; --Result: 8
+
+-- How many distinct users have heartrate data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.heartrate`; --Result: 14
+
+-- How many distinct users have sleep data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.sleep`; --Result: 24
+
+-- How many distinct users have step data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.steps`; --Result: 33
+
+-- How many distinct users have intensity data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.intensity`; --Result: 33
+```
+As we can see from the results, the weight and heartrate tables are missing a significant portion of the 33 users that are present in most other tables. The only other table that was short was sleep, however with 24/33 users being represented, I think it is acceptable to keep and use that data. I will however drop the heartrate and weight data from any further analysis. This limitation has been noted in the ask phase.
 </details>
 
 <details>
