@@ -96,15 +96,35 @@ I performed the same check on each of the activity, heartrate, intensity, sleep,
 ### Check for Duplicates
 Then, I checked if any tables contained duplicate rows using the following query.
 ```
-SELECT
-  id,
-  datetime,
-  COUNT(*) AS duplicate_count
-FROM `fitbit_fitness_tracker.heartrate`
+SELECT id, datetime, COUNT(*) AS row_count
+FROM `fitbit_fitness_tracker.sleep`
 GROUP BY id, datetime
 HAVING COUNT(*) > 1;
 ```
 Once again, I adapted and ran this query on each table in my database.
+For the sleep table, I found 3 duplicate rows. At first I expected this would indicate two separate sleep sessions recorded on the same day, i.e. a nap during the day and a normal sleep session at night. To check, I ran the  following query.
+```
+--Select rows with the duplicate id+date pairs as identified in the previous query
+SELECT *
+FROM `fitbit_fitness_tracker.sleep`
+WHERE (id, datetime) IN (
+  (4388161847, DATE '2016-05-05'),
+  (4702921684, DATE '2016-05-07'),
+  (8378563200, DATE '2016-04-25')
+)
+ORDER BY id, datetime;
+```
+From these results, I can see that this was not what I expected. They were not separate sleep sessions on the same day, rather one sleep session recorded more than once. This makes sense as the sleep table comes from the sleepDay csv file from the dataset, which has already aggregated the sleep records by minute. This means it is safe for me to remove the duplicate rows without losing real data. I ran the following query to do this.
+```
+CREATE OR REPLACE TABLE `fitbit_fitness_tracker.sleep` AS
+SELECT DISTINCT
+  id,
+  DATE(datetime) AS date,
+  sleep_records,
+  sleep_minutes,
+  time_in_bed
+FROM `fitbit_fitness_tracker.sleep`;
+```
 
 #### Check for Outliers and Invalid Data
 I checked the activity table for outliers and invalid data using the following query.
@@ -213,4 +233,97 @@ From the results of this query, we can see that some rows are quite close. For s
  
 However, for some rows there is a large difference that cannot be excused as rounding errors. These indicate data quality issues. In these cases, the distance breakdowns may be misrepresented or missing. For cases such as the example below, I will take the total_distance as the correct value.
  
+
+
+ 
+<details>
+<summary><h3>Data Tranformation</h3></summary>
+
+### Create Derived Metrics
+Next, I want to use the data to derive some metrics I can use to inform the analysis. Since the Bellabeat Leaf product is the focus of this analysis, I want to inspect metrics relevant to sleep, stress and activity.
+
+The first metric I want to create is sleep efficiency. This is defined as
+```
+sleep_minutes / time_in_bed
+```
+I used the following query to create the sleep efficiency column in the sleep table and populate it.
+ ```
+ALTER TABLE `fitbit_fitness_tracker.sleep`
+ADD COLUMN IF NOT EXISTS sleep_efficiency FLOAT64; 
+--Sleep efficiency defined as a float as the result will be a decimal representing a percentage value, e.g. 0.875 = 87.5% of time spent in bed was spent sleeping.
+
+UPDATE `fitbit_fitness_tracker.sleep`
+SET sleep_efficiency = ROUND(sleep_minutes / time_in_bed, 3) 
+--Round for readability
+WHERE time_in_bed > 0;
+```
+
+Next up I want to create some derived metrics in the activity table that will help with the analysis later. Specifically, I think being able to compare weekdays vs weekends could be useful to gain insight into activity levels. I also want to create a column to inspect the total activity minutes per day, and to classify activity level by step count.
+```
+--Add derived columns to the activity table
+ALTER TABLE `fitbit_fitness_tracker.activity`
+ADD COLUMN IF NOT EXISTS total_active_minutes INT64,
+ADD COLUMN IF NOT EXISTS activity_level STRING,
+ADD COLUMN IF NOT EXISTS day_type STRING;
+
+--Populate total active minutes
+UPDATE `fitbit_fitness_tracker.activity`
+SET total_active_minutes = very_active_minutes + fairly_active_minutes + lightly_active_minutes
+WHERE TRUE;
+
+--Classify each day by step count
+--Step counts based on Tudor-Locke & Bassett (2004) https://pubmed.ncbi.nlm.nih.gov/14715035/
+UPDATE `fitbit_fitness_tracker.activity`
+SET activity_level = CASE
+  WHEN steps < 5000 THEN 'Sedentary'
+  WHEN steps < 7500 THEN 'Lightly Active'
+  WHEN steps < 10000 THEN 'Fairly Active'
+  ELSE 'Very Active'
+END
+WHERE TRUE;
+
+--Flag weekday vs weekend
+--EXTRACT(DAYOFWEEK) returns 1 for Sunday and 7 for Saturday
+UPDATE `fitbit_fitness_tracker.activity`
+SET day_type = CASE
+  WHEN EXTRACT(DAYOFWEEK FROM date) IN (1,7) THEN 'Weekend'
+  ELSE 'Weekday'
+END
+WHERE TRUE;
+```
+--Count how many days were logged per user during the date range of the dataset as a measure of user engagement with fitness tracking.
+CREATE OR REPLACE TABLE `fitbit_fitness_tracker.user_engagement` AS
+SELECT
+  id,
+  COUNT(DISTINCT date) AS days_logged,
+  ROUND(
+    COUNT(DISTINCT date) / 
+    (SELECT COUNT(DISTINCT date) FROM `fitbit_fitness_tracker.activity`),
+  2) AS days_logged_percentage
+FROM `fitbit_fitness_tracker.activity`
+GROUP BY id;
+```
+Finally I decided to create a daily_summary table that contained the key data from the activity and sleep tables.
+```
+--Create a summary table combining activity and sleep data. I expect this to be the most relevant to my analysis, so by creating a joined table now, I don't have to write the join again for every query in the analysis phase.
+CREATE OR REPLACE TABLE `fitbit_fitness_tracker.daily_summary` AS
+SELECT
+  a.id,
+  a.date,
+  a.steps,
+  a.calories,
+  a.total_active_minutes,
+  a.activity_level,
+  a.day_type,
+  s.sleep_minutes,
+  s.time_in_bed,
+  s.sleep_efficiency
+FROM `fitbit_fitness_tracker.activity` a
+LEFT JOIN `fitbit_fitness_tracker.sleep` s
+  ON a.id = s.id AND a.date = s.date;
+```
+
+
+</details>
+
 </details>
