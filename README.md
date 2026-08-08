@@ -230,8 +230,12 @@ ORDER BY
   difference ASC;
 ```
 From the results of this query, we can see that some rows are quite close. For small differences (close to 0.1) we can assume that these are due to floating-point precision errors (rounding errors in calculations), as per the example below. 
+<img width="581" height="81" alt="image" src="https://github.com/user-attachments/assets/b086556e-86ab-4325-b489-526d501aacda" />
+
  
 However, for some rows there is a large difference that cannot be excused as rounding errors. These indicate data quality issues. In these cases, the distance breakdowns may be misrepresented or missing. For cases such as the example below, I will take the total_distance as the correct value.
+<img width="645" height="79" alt="image" src="https://github.com/user-attachments/assets/af980467-0236-4cb7-a03e-c9e39a34ee43" />
+
 
 #### Check Data Coverage
 I wanted to check how many distinct users were in each table, as a way to check if all users were represented in all tables.
