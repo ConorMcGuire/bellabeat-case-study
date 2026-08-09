@@ -31,7 +31,7 @@ Analyze Fitbit fitness tracker data to identify trends and use these insights to
 Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset she thinks will be useful for answering the business question: [FitBit Fitness Tracker Data (Kaggle)](https://www.kaggle.com/datasets/arashnic/fitbit)
 
 ### Data Organization
-The dataset is split into separate CSV files for activity, sleep, heart rate, calories and step count. It contains data on 30 users between March and May of 2016.
+The dataset is split into separate CSV files for activity, sleep, heart rate, calories and step count across two months in 2016. It contains data on 33 users between March and May of 2016.
 
 ### Limitations
 - Most of the datasets contain data for 33 users. Some datasets only contain data on even fewer users, e.g. the weight data was only present for 8 of the 33, and heartrate for only 14 of the 33. Due to the limited coverage these datasets will be excluded from my analysis.
@@ -39,7 +39,7 @@ The dataset is split into separate CSV files for activity, sleep, heart rate, ca
 - Only two months of data - Examining data from a longer time period would give more insight into how trends are developing in fitness tracker usage.
 
 ### Datasets Used
-For this analysis, I used the datasets for daily activity, sleep, weight, heartrate and step count as I believe these are most relevant to answering the business question.
+For this analysis, I primarily used the daily activity and sleep datasets. Weight and heart rate data were initially considered but excluded due to limited user coverage (see Process phase).
 
 </details>
 
@@ -93,7 +93,7 @@ FROM `fitbit_fitness_tracker.heartrate`;
 ```
 I performed the same check on each of the activity, heartrate, intensity, sleep, steps and weight tables.
 
-### Check for Duplicates
+#### Check for Duplicates
 Then, I checked if any tables contained duplicate rows using the following query.
 ```
 SELECT id, datetime, COUNT(*) AS row_count
@@ -107,12 +107,12 @@ For the sleep table, I found 3 duplicate rows. At first I expected this would in
 --Select rows with the duplicate id+date pairs as identified in the previous query
 SELECT *
 FROM `fitbit_fitness_tracker.sleep`
-WHERE (id, datetime) IN (
+WHERE (id, date) IN (
   (4388161847, DATE '2016-05-05'),
   (4702921684, DATE '2016-05-07'),
   (8378563200, DATE '2016-04-25')
 )
-ORDER BY id, datetime;
+ORDER BY id, date;
 ```
 From these results, I can see that this was not what I expected. They were not separate sleep sessions on the same day, rather one sleep session recorded more than once. This makes sense as the sleep table comes from the sleepDay csv file from the dataset, which has already aggregated the sleep records by minute. This means it is safe for me to remove the duplicate rows without losing real data. I ran the following query to do this.
 ```
@@ -354,8 +354,6 @@ LEFT JOIN `fitbit_fitness_tracker.sleep` s
 
 </details>
 
-</details>
-
 <details>
 <summary><h2>Phase 4: Analyze</h2></summary>
 
@@ -519,7 +517,7 @@ This visualization compares average steps and active minutes between weekdays an
 
 
 ### Sleep Efficiency by Activity Level 
-This visualization compares average sleep efficiency across activity level groups. Efficiency is nearly constant regardless of activity level, indicating no meaningful relationship between physical activity and sleep quality in this dataset.
+This visualization compares average sleep efficiency across activity level groups. Efficiency is nearly constant regardless of activity level, indicating no meaningful relationship between physical activity and sleep efficiency in this dataset.
 
 <img width="500" height="400" alt="Sleep" src="https://github.com/user-attachments/assets/6e1be908-51c6-4274-bd3d-e899f6b5e3d4" />
 
