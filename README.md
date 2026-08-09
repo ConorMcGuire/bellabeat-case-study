@@ -502,26 +502,31 @@ I produced five visualizations, each corresponding to one finding from the Analy
 
 ### Engagement Tiers
 This visualization shows the distribution of users across High, Medium, and Low engagement tiers, based on the percentage of days each user logged data. The large majority of users fall into the High tier, indicating that consistent tracker use is common once the user has a tracking device.
- <img width="500" height="400" alt="Engagement" src="https://github.com/user-attachments/assets/c4c94e5c-bdca-4db6-baf4-58979844225a" />
+
+<img width="500" height="400" alt="Engagement" src="https://github.com/user-attachments/assets/c4c94e5c-bdca-4db6-baf4-58979844225a" />
 
 
 ### Activity Level Distribution
 This visualization shows the number of user-days at each activity level (Sedentary through Very Active). The distribution is bimodal, with users more often having distinctly active or distinctly inactive days rather than a smooth middle ground.
+
  <img width="500" height="400" alt="Activity" src="https://github.com/user-attachments/assets/426bbe44-ef27-401c-b84d-bf17344dea77" />
 
 
 ### Weekday vs. Weekend Activity
 This visualization compares average steps and active minutes between weekdays and weekends. Both measures are nearly identical across the week, contradicting my expectation that activity would rise on the weekends.
+
  <img width="500" height="400" alt="Weekday vs Weekend" src="https://github.com/user-attachments/assets/198eb348-cfe9-4c54-ae69-54f29ef230e7" />
 
 
 ### Sleep Efficiency by Activity Level 
 This visualization compares average sleep efficiency across activity level groups. Efficiency is nearly constant regardless of activity level, indicating no meaningful relationship between physical activity and sleep quality in this dataset.
- <img width="500" height="400" alt="Sleep" src="https://github.com/user-attachments/assets/6e1be908-51c6-4274-bd3d-e899f6b5e3d4" />
+
+<img width="500" height="400" alt="Sleep" src="https://github.com/user-attachments/assets/6e1be908-51c6-4274-bd3d-e899f6b5e3d4" />
 
 
 ### Engagement vs. Activity
 In my opinion this is the most important finding. This visualization compares average steps and active minutes across engagement tiers. Both metrics increase substantially with engagement tier, suggesting that consistent device usage and physical activity are closely linked. However, causation cannot be determined from this data alone.
+
  <img width="500" height="400" alt="Engagement vs Activity" src="https://github.com/user-attachments/assets/d78e6588-bc4e-465d-8637-eb17611b29fa" />
 
 </details>
