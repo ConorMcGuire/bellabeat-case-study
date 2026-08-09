@@ -5,8 +5,8 @@ A case study on the wellness company Bellabeat as part of the Coursera Google Da
 # Introduction
 In this case study, I play the part of a junior data analyst for Bellabeat, a high-tech manufacturer of health-focused products for women. The company's cofounder believes that analyzing smart device fitness data could lead to growth opportunities for the company. I've been asked to focus on one of Bellabeat's products and analyze smart device data to gain insight into how customers use smart devices. I will then present the insights to the Bellabeat executive team along with recommendations to guide the marketing strategy.
 
-<details>
-<summary><h2 style="display: inline;">Phase 1: Ask</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 1: Ask</h2></summary>
 To guide myself in this analysis, I will ask myself:
 1. What is the problem I'm trying to solve?
 2. How can my insights drive business decisions?
@@ -25,8 +25,8 @@ Analyze Fitbit fitness tracker data to identify trends and use these insights to
 
 </details>
 
-<details>
-<summary><h2 style="display: inline;">Phase 2: Prepare</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 2: Prepare</h2></summary>
   
 Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset she thinks will be useful for answering the business question: [FitBit Fitness Tracker Data (Kaggle)](https://www.kaggle.com/datasets/arashnic/fitbit)
 
@@ -43,14 +43,14 @@ For this analysis, I primarily used the daily activity and sleep datasets. Weigh
 
 </details>
 
-<details>
-<summary><h2 style="display: inline;">Phase 3: Process</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 3: Process</h2></summary>
 
 ### Tools Used
 The process phase involves cleaning and transforming the data. For this I'll be using SQL. I chose SQL as this is a large dataset with multiple related tables, some of which have millions of rows. This makes SQL a more appropriate tool than spreadsheets in this instance. I will be using BigQuery as my SQL environment.
 
-<details>
-<summary><h3 style="display: inline;">Data Cleaning</h3></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h3 style="display: inline; margin: 0 0 0 6px;">Data Cleaning</h3></summary>
   
 To begin, I imported the data from the CSV files into BigQuery so I could analyze it with SQL. Big Query did not automatically recognize the date/time columns of some of the datasets and imported it as a string instead. I used the following query to parse the string as a corrected DATETIME value, then add the corrected values to a new column. 
 ```
@@ -261,8 +261,8 @@ SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.intensity`; --Result: 33
 As we can see from the results, the weight and heartrate tables are missing a significant portion of the 33 users that are present in most other tables. The only other table that was short was sleep, however with 24/33 users being represented, I think it is acceptable to keep and use that data. I will however drop the heartrate and weight data from any further analysis. This limitation has been noted in the ask phase.
 </details>
 
-<details>
-<summary><h3 style="display: inline;">Data Tranformation</h3></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h3 style="display: inline; margin: 0 0 0 6px;">Data Tranformation</h3></summary>
 
 ### Create Derived Metrics
 Next, I want to use the data to derive some metrics I can use to inform the analysis. Since the Bellabeat Leaf product is the focus of this analysis, I want to inspect metrics relevant to sleep, stress and activity.
@@ -354,8 +354,8 @@ LEFT JOIN `fitbit_fitness_tracker.sleep` s
 
 </details>
 
-<details>
-<summary><h2 style="display: inline;">Phase 4: Analyze</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 4: Analyze</h2></summary>
 
 #### User Engagement
 To begin my analysis, I wanted to look further into the user_engagement table I created in the previous phase.
@@ -491,8 +491,8 @@ Here are the results:
 From these results we can see that the users with high engagement with logging their activity also have the highest average step count and active minutes count. Medium and low engagement users have noticeably lower activity levels. This shows that user engagement and activity are linked. It is important to note that causation cannot be determined from this data alone. Perhaps highly active users are more motivated to log consistently, or maybe consistent logging may encourage more activity. Either way, this result shows us that user engagement is a metric worth focusing on.
 </details>
 
-<details>
-<summary><h2 style="display: inline;">Phase 5: Share</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 5: Share</h2></summary>
 
 To communicate the findings from the Analyze phase to a non-technical audience, I created a set of visualizations in Tableau Desktop, connecting directly to my cleaned and transformed BigQuery tables. Given the audience for this case study is the Bellabeat executive team, I focused each visualization on a single, clearly stated finding, using minimal chart types and a consistent visual style (a single accent color palette, direct data labels, and plain-language titles) rather than dense, multi-metric dashboards.
 
@@ -529,8 +529,8 @@ In my opinion this is the most important finding. This visualization compares av
 
 </details>
 
-<details>
-<summary><h2 style="display: inline;">Phase 6: Act</h2></summary>
+<details style="margin-bottom: 1.5rem;">
+<summary><h2 style="display: inline; margin: 0 0 0 6px;">Phase 6: Act</h2></summary>
 
 ### Conclusion
 
