@@ -528,3 +528,26 @@ In my opinion this is the most important finding. This visualization compares av
  <img width="500" height="400" alt="Engagement vs Activity" src="https://github.com/user-attachments/assets/d78e6588-bc4e-465d-8637-eb17611b29fa" />
 
 </details>
+
+<details>
+<summary><h2>Phase 6: Act</h2></summary>
+
+### Conclusion
+
+This analysis set out to identify trends in smart device usage and consider how those trends could inform Bellabeat's marketing strategy for the Leaf. The data shows that once users adopt a fitness tracker, consistent day-to-day use is the norm rather than the exception, and that this consistency is closely tied to physical activity levels, as highly engaged users are also the most active. Activity itself tends toward extremes (very active or largely inactive) rather than a steady middle ground, and is remarkably stable across the week, with no meaningful difference between weekdays and weekends. Sleep efficiency showed no measurable relationship to activity level in this dataset. Together, these findings point toward user engagement and habit formation, rather than activity intensity alone, as the more promising lever for Bellabeat's marketing strategy.
+
+### Top Recommendations
+#### 1. Prioritize marketing messaging around consistent, everyday use rather than activity intensity.
+The strongest finding in this analysis was the link between engagement (how consistently a user logs data) and physical activity. Highly engaged users averaged 9,040 steps/day versus 5,117 for the least engaged, a 77% difference. Since Leaf tracks activity, sleep, and stress as an integrated part of daily life, marketing should emphasize building a daily tracking habit rather than promoting the Leaf primarily as a tool for intense workouts. Campaigns built around routine and consistency (e.g. "make it part of your day") are more likely to resonate with how users actually engage with the product.
+
+#### 2. Focus retention efforts on the first one to two weeks of device ownership.
+The one clearly low-engagement user in this dataset showed activity concentrated in the first few days of the study period, consistent with early dropout rather than gradual disengagement. While this is a single case and not something to generalize broadly from, it aligns with well-documented patterns in wearable device adoption, where early weeks are typically the highest-risk period for abandonment. Bellabeat should consider strengthening onboarding with features such as early check-ins, achievable early goals, or app prompts in the first two weeks. This would convert early interest into the sustained daily habit that the engagement findings show is achievable and valuable.
+
+#### 3. Do not tie campaign timing to weekday/weekend activity assumptions.
+Average steps and active minutes were nearly identical between weekdays and weekends, despite the common assumption that increased free time on weekends leads to higher activity. This suggests Bellabeat's marketing does not need separate weekday- and weekend-specific activity campaigns; a consistent, always-on messaging approach around daily habit-building (per recommendation 1) is better supported by the data than day-specific timing strategies.
+
+### Limitations and Further Research
+This analysis is based on a small sample of 33 users over roughly one month, which limits how confidently these findings can be generalized to Bellabeat's broader customer base. The dataset also lacks demographic information, which would be particularly relevant given Bellabeat's focus on women's health. Weight and heart rate data were excluded from the main analysis due to limited user coverage, and could be explored separately with a more complete dataset. Notably, this analysis found no relationship between activity level and sleep efficiency, which contradicts common assumptions about exercise and sleep quality. A longer time period or larger sample might reveal a relationship this dataset was not able to detect, and would be a valuable area for Bellabeat to investigate directly using its own more extensive Leaf user data.
+
+</details>
+
