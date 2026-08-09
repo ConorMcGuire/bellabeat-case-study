@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bellabeat Case Study — Conor McGuire</title>
+<style>
+  :root {
+    --text: #1f2328;
+    --text-secondary: #57606a;
+    --border: #d0d7de;
+    --code-bg: #f6f8fa;
+    --link: #0969da;
+    --accent: #4a7a58;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  h1 { font-size: 2rem; font-weight: 600; margin: 1.8rem 0 0.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+  h2 { font-size: 1.5rem; font-weight: 600; margin: 1.4rem 0 0.5rem; }
+  h3 { font-size: 1.25rem; font-weight: 600; margin: 1.2rem 0 0.4rem; }
+  h4 { font-size: 1.05rem; font-weight: 600; margin: 1rem 0 0.4rem; }
+  p { margin: 0.8rem 0; }
+  a { color: var(--link); }
+  ul, ol { margin: 0.6rem 0; padding-left: 1.6rem; }
+  li { margin: 0.25rem 0; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.88em;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+  pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+    margin: 1rem 0;
+  }
+  details {
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0 1.2rem;
+  }
+  details[open] { padding-bottom: 1rem; }
+  details details {
+    margin: 1.2rem 0;
+    border-color: var(--border);
+  }
+  summary {
+    cursor: pointer;
+    padding: 1rem 0;
+    list-style: revert;
+  }
+  summary::marker { color: var(--accent); }
+  summary h2, summary h3 {
+    display: inline;
+    margin: 0 0 0 0.4rem;
+  }
+  .intro-title { margin-top: 0; }
+  .byline { color: var(--text-secondary); font-weight: 400; font-size: 1.1rem; margin-top: -0.4rem; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+</style>
+</head>
+<body>
+<h1 id="bellabeat-case-study">Bellabeat Case Study</h1>
+<h2 id="by-conor-mcguire">by Conor McGuire</h2>
+<p>A case study on the wellness company Bellabeat as part of the
+Coursera Google Data Analytics course.</p>
+<h1 id="introduction">Introduction</h1>
+<p>In this case study, I play the part of a junior data analyst for
+Bellabeat, a high-tech manufacturer of health-focused products for
+women. The company’s cofounder believes that analyzing smart device
+fitness data could lead to growth opportunities for the company. I’ve
+been asked to focus on one of Bellabeat’s products and analyze smart
+device data to gain insight into how customers use smart devices. I will
+then present the insights to the Bellabeat executive team along with
+recommendations to guide the marketing strategy.</p>
+<details> <summary><h2>Phase 1: Ask</h2></summary> To guide myself
+in this analysis, I will ask myself: 1. What is the problem I’m trying
+to solve? 2. How can my insights drive business decisions?</p>
+<h2 id="business-task">Business Task</h2>
+<p>Analyze Fitbit fitness tracker data to identify trends and use these
+insights to recommend a marketing strategy for Bellabeat’s Leaf
+product.</p>
+<h2 id="stakeholders">Stakeholders</h2>
+<ul>
+<li>Bellabeat executive team (Urška Sršen, Sando Mur).</li>
+<li>Bellabeat marketing team.</li>
+</ul>
+<h2 id="key-questions">Key Questions</h2>
+<ul>
+<li>What are the trends in smart device usage?</li>
+<li>How do these trends apply to Bellabeat’s Leaf users?</li>
+<li>How can Bellabeat leverage these trends to shape the marketing
+strategy for the Leaf?</li>
+</ul>
+</details>
+<details> <summary><h2>Phase 2: Prepare</h2></summary>
+<p>Urška Sršen, the CCO of Bellabeat, has pointed to a specific dataset
+she thinks will be useful for answering the business question: <a
+href="https://www.kaggle.com/datasets/arashnic/fitbit">FitBit Fitness
+Tracker Data (Kaggle)</a></p>
+<h3 id="data-organization">Data Organization</h3>
+<p>The dataset is split into separate CSV files for activity, sleep,
+heart rate, calories and step count across two months in 2016. It
+contains data on 33 users between March and May of 2016.</p>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Most of the datasets contain data for 33 users. Some datasets only
+contain data on even fewer users, e.g. the weight data was only present
+for 8 of the 33, and heartrate for only 14 of the 33. Due to the limited
+coverage these datasets will be excluded from my analysis.</li>
+<li>The data does not contain the user’s gender. Gender would be
+relevant as Bellabeat’s health products are designed for women.</li>
+<li>Only two months of data - Examining data from a longer time period
+would give more insight into how trends are developing in fitness
+tracker usage.</li>
+</ul>
+<h3 id="datasets-used">Datasets Used</h3>
+<p>For this analysis, I primarily used the daily activity and sleep
+datasets. Weight and heart rate data were initially considered but
+excluded due to limited user coverage (see Process phase).</p>
+</details>
+<details> <summary><h2>Phase 3: Process</h2></summary>
+<h3 id="tools-used">Tools Used</h3>
+<p>The process phase involves cleaning and transforming the data. For
+this I’ll be using SQL. I chose SQL as this is a large dataset with
+multiple related tables, some of which have millions of rows. This makes
+SQL a more appropriate tool than spreadsheets in this instance. I will
+be using BigQuery as my SQL environment.</p>
+<details> <summary><h3>Data Cleaning</h3></summary>
+<p>To begin, I imported the data from the CSV files into BigQuery so I
+could analyze it with SQL. Big Query did not automatically recognize the
+date/time columns of some of the datasets and imported it as a string
+instead. I used the following query to parse the string as a corrected
+DATETIME value, then add the corrected values to a new column.</p>
+<pre><code>--Add a new empty column called date
+ALTER TABLE `fitbit_fitness_tracker.heartrate`
+ADD COLUMN IF NOT EXISTS datetime DATETIME;
+
+--Parse each date from a string to a datetime and insert into new column
+UPDATE `fitbit_fitness_tracker.heartrate`
+SET datetime = PARSE_DATETIME(&#39;%m/%d/%Y %I:%M:%S %p&#39;, time)
+WHERE TRUE; --Update requires where clause, but we want to include all rows
+
+--Check that the new column has been populated correctly by comparing to the old string date column
+SELECT
+  time,
+  datetime
+FROM
+  `fitbit_fitness_tracker.heartrate`
+LIMIT 10;</code></pre>
+<p>After manually confirming that the new column had been populated
+correctly, I dropped the original string format column.</p>
+<pre><code>ALTER TABLE fitbit_fitness_tracker.heartrate
+DROP COLUMN time;
+</code></pre>
+<p>The same query was repeated on all datsets where the date or time was
+not automatically recognized as a datetime field in BigQuery.</p>
+<h4 id="check-for-nulls">Check for Nulls</h4>
+<p>Next, I checked if the heartrate table contained null values using
+the following query.</p>
+<pre><code>SELECT
+  COUNT(*) AS total_rows, --Total rows in table
+--For each row, sum how many nulls are present
+  SUM(CASE WHEN id IS NULL THEN 1 ELSE 0 END) AS null_ids, 
+  SUM(CASE WHEN datetime IS NULL THEN 1 ELSE 0 END) AS null_times,
+  SUM(CASE WHEN value IS NULL THEN 1 ELSE 0 END) AS null_values,
+
+FROM `fitbit_fitness_tracker.heartrate`;</code></pre>
+<p>I performed the same check on each of the activity, heartrate,
+intensity, sleep, steps and weight tables.</p>
+<h4 id="check-for-duplicates">Check for Duplicates</h4>
+<p>Then, I checked if any tables contained duplicate rows using the
+following query.</p>
+<pre><code>SELECT id, datetime, COUNT(*) AS row_count
+FROM `fitbit_fitness_tracker.sleep`
+GROUP BY id, datetime
+HAVING COUNT(*) &gt; 1;</code></pre>
+<p>Once again, I adapted and ran this query on each table in my
+database. For the sleep table, I found 3 duplicate rows. At first I
+expected this would indicate two separate sleep sessions recorded on the
+same day, i.e. a nap during the day and a normal sleep session at night.
+To check, I ran the following query.</p>
+<pre><code>--Select rows with the duplicate id+date pairs as identified in the previous query
+SELECT *
+FROM `fitbit_fitness_tracker.sleep`
+WHERE (id, date) IN (
+  (4388161847, DATE &#39;2016-05-05&#39;),
+  (4702921684, DATE &#39;2016-05-07&#39;),
+  (8378563200, DATE &#39;2016-04-25&#39;)
+)
+ORDER BY id, date;</code></pre>
+<p>From these results, I can see that this was not what I expected. They
+were not separate sleep sessions on the same day, rather one sleep
+session recorded more than once. This makes sense as the sleep table
+comes from the sleepDay csv file from the dataset, which has already
+aggregated the sleep records by minute. This means it is safe for me to
+remove the duplicate rows without losing real data. I ran the following
+query to do this.</p>
+<pre><code>CREATE OR REPLACE TABLE `fitbit_fitness_tracker.sleep` AS
+SELECT DISTINCT
+  id,
+  DATE(datetime) AS date,
+  sleep_records,
+  sleep_minutes,
+  time_in_bed
+FROM `fitbit_fitness_tracker.sleep`;</code></pre>
+<h4 id="check-for-outliers-and-invalid-data">Check for Outliers and
+Invalid Data</h4>
+<p>I checked the activity table for outliers and invalid data using the
+following query.</p>
+<pre><code>--Check the min and max step counts and calorie counts
+SELECT
+  MIN(steps) AS min_steps,  --result 0
+  MAX(steps) AS max_steps,  --result 36019
+  MIN(calories) AS min_calories,  --result 0
+  MAX(calories) AS max_calories   --result 4900
+FROM `fitbit_fitness_tracker.activity`;
+
+--Check the min and max heartrate values
+SELECT
+  MIN(value) AS min_heartrate, --result 36
+  MAX(value) AS max_heartrate  --result 203
+FROM `fitbit_fitness_tracker.heartrate`;
+
+-- Check how many sleep counts fall outside 5-12 hours, typical range for adults
+SELECT COUNT(*)
+FROM `fitbit_fitness_tracker.sleep`
+WHERE sleep_minutes &lt; 300 OR sleep_minutes &gt; 720; --result 54
+
+--Check how many weights fall outside 40kg and 200kg, a typical range for adults
+SELECT COUNT(*)
+FROM `fitbit_fitness_tracker.weight`
+WHERE weight_kg &lt; 40 OR weight_kg &gt; 200; --result 0</code></pre>
+<p>The result of these queries allow me to quickly examine that the data
+fall within the expected range. For example, we know that neither steps
+nor calories should be negative. The max step count was 36,019, which is
+a valid value. The max calories were 4900, which while high, is not high
+enough for me to consider it an outlier. The min and max heartrates are
+realistic numbers, between 30-220 bpm is typical. 54 sleep records being
+outside the 5-12 hour range is acceptable, as it is the typical range
+but not a strict limit. One result that stood out was that the minimum
+step count and minimum calories were zero. I decided to investigate
+further. I ran the following query to inspect some of the suspect
+rows.</p>
+<pre><code>SELECT
+  id,
+  date,
+  steps,
+  calories,
+  very_active_minutes,
+  fairly_active_minutes,
+  lightly_active_minutes,
+  sedentary_minutes
+FROM `fitbit_fitness_tracker.activity`
+WHERE steps = 0 OR calories = 0
+LIMIT 10;</code></pre>
+<p>This result revealed that in rows where the steps were 0, sedentary
+minutes were 1440 (24 hours). The activity table only shows the total
+steps for a day. The steps table shows the number of steps per hour. I
+decided to use the steps per hour to recalculate the daily steps and
+check if the zero step rows persisted. To do this I used the following
+query.</p>
+<pre><code>--Create a new column in the activity table where the sum of hourly steps will be added
+ALTER TABLE `fitbit_fitness_tracker.activity`
+ADD COLUMN IF NOT EXISTS total_steps_from_hourly INT64;
+
+--Update the new row to contain the sum of steps for each day for each user
+UPDATE `fitbit_fitness_tracker.activity` a
+SET total_steps_from_hourly = (
+  SELECT SUM(steps)
+  FROM `fitbit_fitness_tracker.steps` s
+  WHERE s.Id = a.Id AND DATE(s.datetime) = DATE(a.date)
+)
+WHERE TRUE;
+
+--Verify if the rows that had 0 steps in the orignal activity table have 0 steps when calculated from the hourly values
+SELECT
+  id,
+  date,
+  steps,
+  total_steps_from_hourly
+FROM `fitbit_fitness_tracker.activity`
+WHERE steps = 0
+LIMIT 10;</code></pre>
+<p>From the results of this query, I can see that the step counts are
+still zero. This means that the 0 in the activity table is not an error.
+The most likely explanation is that zero is a default value that is
+entered when no steps are recorded. I decided that these rows would not
+be useful to my analysis, so I removed them from the table using the
+following query.</p>
+<pre><code>--Delete rows with zero steps
+DELETE FROM `fitbit_fitness_tracker.activity`
+WHERE steps = 0 AND total_steps_from_hourly = 0;</code></pre>
+<p>Next, I checked the logical consistency of the total_distance column
+by adding each of the breakdown columns together and comparing the
+result.</p>
+<pre><code>SELECT
+  --Round total distance and total from breakdown to 2 decimal places for readability
+  ROUND(total_distance,2) AS total_distance,
+  ROUND((very_active_distance +
+  moderately_active_distance +
+  light_active_distance +
+  sedentary_active_distance), 2) AS total_from_breakdown,
+  --Due to the high decimal accuracy of the individual distance by activity level columns, the total from breakdown may not be exactly equal. In this case I use ABS to get the difference between the two values to make sure they are within an acceptable margin of eachother.
+  ABS(total_distance - 
+  (very_active_distance +
+  moderately_active_distance +
+  light_active_distance +
+  sedentary_active_distance)) AS difference
+FROM
+  `bellabeat-analysis-502600.fitbit_fitness_tracker.activity`
+WHERE
+  ABS(
+    total_distance - 
+    (very_active_distance +
+    moderately_active_distance +
+    light_active_distance +
+    sedentary_active_distance)
+  ) &gt; 0.1 --I used 0.1 as the acceptable threshold of difference between the two values.
+ORDER BY
+  difference ASC;</code></pre>
+<p>From the results of this query, we can see that some rows are quite
+close. For small differences (close to 0.1) we can assume that these are
+due to floating-point precision errors (rounding errors in
+calculations), as per the example below.
+<img width="581" height="81" alt="image" src="https://github.com/user-attachments/assets/b086556e-86ab-4325-b489-526d501aacda" /></p>
+<p>However, for some rows there is a large difference that cannot be
+excused as rounding errors. These indicate data quality issues. In these
+cases, the distance breakdowns may be misrepresented or missing. For
+cases such as the example below, I will take the total_distance as the
+correct value.
+<img width="645" height="79" alt="image" src="https://github.com/user-attachments/assets/af980467-0236-4cb7-a03e-c9e39a34ee43" /></p>
+<h4 id="check-data-coverage">Check Data Coverage</h4>
+<p>I wanted to check how many distinct users were in each table, as a
+way to check if all users were represented in all tables.</p>
+<pre><code>-- How many distinct users have activity data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.activity`; --Result: 33
+
+-- How many distinct users actually have weight data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.weight`; --Result: 8
+
+-- How many distinct users have heartrate data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.heartrate`; --Result: 14
+
+-- How many distinct users have sleep data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.sleep`; --Result: 24
+
+-- How many distinct users have step data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.steps`; --Result: 33
+
+-- How many distinct users have intensity data?
+SELECT COUNT(DISTINCT id) FROM `fitbit_fitness_tracker.intensity`; --Result: 33</code></pre>
+<p>As we can see from the results, the weight and heartrate tables are
+missing a significant portion of the 33 users that are present in most
+other tables. The only other table that was short was sleep, however
+with 24/33 users being represented, I think it is acceptable to keep and
+use that data. I will however drop the heartrate and weight data from
+any further analysis. This limitation has been noted in the ask phase.
+</details>
+<details> <summary><h3>Data Tranformation</h3></summary>
+<h3 id="create-derived-metrics">Create Derived Metrics</h3>
+<p>Next, I want to use the data to derive some metrics I can use to
+inform the analysis. Since the Bellabeat Leaf product is the focus of
+this analysis, I want to inspect metrics relevant to sleep, stress and
+activity.</p>
+<h4 id="sleep-efficiency">Sleep Efficiency</h4>
+<p>The first metric I want to create is sleep efficiency. This is
+defined as</p>
+<pre><code>sleep_minutes / time_in_bed</code></pre>
+<p>I used the following query to create the sleep efficiency column in
+the sleep table and populate it.</p>
+<pre><code>ALTER TABLE `fitbit_fitness_tracker.sleep`
+ADD COLUMN IF NOT EXISTS sleep_efficiency FLOAT64; 
+--Sleep efficiency defined as a float as the result will be a decimal representing a percentage value, e.g. 0.875 = 87.5% of time spent in bed was spent sleeping.
+
+UPDATE `fitbit_fitness_tracker.sleep`
+SET sleep_efficiency = ROUND(sleep_minutes / time_in_bed, 3) 
+--Round for readability
+WHERE time_in_bed &gt; 0;</code></pre>
+<h4 id="activity-table-derived-metrics">Activity Table Derived
+Metrics</h4>
+<p>Next up I want to create some derived metrics in the activity table
+that will help with the analysis later. Specifically, I think being able
+to compare weekdays vs weekends could be useful to gain insight into
+activity levels. I also want to create a column to inspect the total
+activity minutes per day, and to classify activity level by step
+count.</p>
+<pre><code>--Add derived columns to the activity table
+ALTER TABLE `fitbit_fitness_tracker.activity`
+ADD COLUMN IF NOT EXISTS total_active_minutes INT64,
+ADD COLUMN IF NOT EXISTS activity_level STRING,
+ADD COLUMN IF NOT EXISTS day_type STRING;
+
+--Populate total active minutes
+UPDATE `fitbit_fitness_tracker.activity`
+SET total_active_minutes = very_active_minutes + fairly_active_minutes + lightly_active_minutes
+WHERE TRUE;
+
+--Classify each day by step count
+--Step counts based on Tudor-Locke &amp; Bassett (2004) https://pubmed.ncbi.nlm.nih.gov/14715035/
+UPDATE `fitbit_fitness_tracker.activity`
+SET activity_level = CASE
+  WHEN steps &lt; 5000 THEN &#39;Sedentary&#39;
+  WHEN steps &lt; 7500 THEN &#39;Lightly Active&#39;
+  WHEN steps &lt; 10000 THEN &#39;Fairly Active&#39;
+  ELSE &#39;Very Active&#39;
+END
+WHERE TRUE;
+
+--Flag weekday vs weekend
+--EXTRACT(DAYOFWEEK) returns 1 for Sunday and 7 for Saturday
+UPDATE `fitbit_fitness_tracker.activity`
+SET day_type = CASE
+  WHEN EXTRACT(DAYOFWEEK FROM date) IN (1,7) THEN &#39;Weekend&#39;
+  ELSE &#39;Weekday&#39;
+END
+WHERE TRUE;</code></pre>
+<pre><code>--Count how many days were logged per user during the date range of the dataset as a measure of user engagement with fitness tracking.
+CREATE OR REPLACE TABLE `fitbit_fitness_tracker.user_engagement` AS
+SELECT
+  id,
+  COUNT(DISTINCT date) AS days_logged,
+  ROUND(
+    COUNT(DISTINCT date) / 
+    (SELECT COUNT(DISTINCT date) FROM `fitbit_fitness_tracker.activity`),
+  2) AS days_logged_percentage
+FROM `fitbit_fitness_tracker.activity`
+GROUP BY id;</code></pre>
+<h4 id="summary-key-activity-and-sleep-metrics">Summary Key Activity and
+Sleep Metrics</h4>
+<p>Finally I decided to create a daily_summary table that contained the
+key data from the activity and sleep tables.</p>
+<pre><code>--Create a summary table combining activity and sleep data. I expect this to be the most relevant to my analysis, so by creating a joined table now, I don&#39;t have to write the join again for every query in the analysis phase.
+CREATE OR REPLACE TABLE `fitbit_fitness_tracker.daily_summary` AS
+SELECT
+  a.id,
+  a.date,
+  a.steps,
+  a.calories,
+  a.total_active_minutes,
+  a.activity_level,
+  a.day_type,
+  s.sleep_minutes,
+  s.time_in_bed,
+  s.sleep_efficiency
+FROM `fitbit_fitness_tracker.activity` a
+LEFT JOIN `fitbit_fitness_tracker.sleep` s
+  ON a.id = s.id AND a.date = s.date;</code></pre>
+</details>
+</details>
+<details> <summary><h2>Phase 4: Analyze</h2></summary>
+<h4 id="user-engagement">User Engagement</h4>
+<p>To begin my analysis, I wanted to look further into the
+user_engagement table I created in the previous phase. First, I wanted
+to understand the overall level of engagement across all users in the
+data.</p>
+<pre><code>-- Engagement distribution
+SELECT
+  id,
+  days_logged,
+  days_logged_percentage,
+  CASE
+    WHEN days_logged_percentage &gt;= 0.75 THEN &#39;High&#39;
+    WHEN days_logged_percentage &gt;= 0.4 THEN &#39;Medium&#39;
+    ELSE &#39;Low&#39;
+  END AS engagement_tier
+FROM `fitbit_fitness_tracker.user_engagement`
+ORDER BY days_logged_percentage DESC;
+
+-- Count how many users per bucket (summary of above query)
+SELECT
+  CASE
+    WHEN days_logged_percentage &gt;= 0.75 THEN &#39;High&#39;
+    WHEN days_logged_percentage &gt;= 0.4 THEN &#39;Medium&#39;
+    ELSE &#39;Low&#39;
+  END AS engagement_tier,
+  COUNT(*) AS num_users
+FROM `fitbit_fitness_tracker.user_engagement`
+GROUP BY engagement_tier
+ORDER BY engagement_tier;</code></pre>
+<p><img width="504" height="164" alt="image" src="https://github.com/user-attachments/assets/3b5e00c3-27c7-43a3-9028-89b0604b25ec" /></p>
+<p>From these results, I could see that 23 of the 33 total users had a
+high engagement with the fitness tracker (Above 75%). 9 users had a
+medium level of engagement with the fitness tracker. This bucket was
+defined as being between 40% and 75%. However, by looking at the results
+of the first query, nobody in the medium bucket had engagement below
+55%. There was only 1 user that fell into the low engagement category
+(Below 40%). From the results we can see that this user only logged 3
+days over the course of the month covered by the data. I was curious
+about this user, so I ran another query to look further into their
+logging history.</p>
+<pre><code>-- Check whether the low-engagement user&#39;s activity is clustered at the start (early dropout) or spread out
+SELECT date, steps, activity_level
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE id = 4057192912
+ORDER BY date;</code></pre>
+<p>From these results we can see that the low engagement user only
+logged on the 12th, 13th and 15th of April. These dates are right at the
+beginning of the date range for this dataset. This indicates that this
+user dropped out of the tracking early, rather than indicating sporadic
+usage over a long term, such as logging once per week. This could be
+worth flagging as a user retention issue, however with only one user
+exhibiting this behaviour, it is not enough to generalize.</p>
+<h4 id="activity-patterns">Activity Patterns</h4>
+<p>Next, I wanted to analyze the activity patterns of users using the
+daily_summary table I created in the process phase.</p>
+<pre><code>-- Number of days for each activity level
+SELECT
+  activity_level,
+  COUNT(*) AS num_days,
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 1) AS pct_of_days
+FROM `fitbit_fitness_tracker.daily_summary`
+GROUP BY activity_level
+ORDER BY num_days DESC;
+
+-- Weekday vs weekend
+SELECT
+  day_type,
+  ROUND(AVG(steps), 0) AS avg_steps,
+  ROUND(AVG(total_active_minutes), 1) AS avg_active_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary`
+GROUP BY day_type;
+</code></pre>
+<p>Here are the results of the first query:
+<img width="698" height="209" alt="image" src="https://github.com/user-attachments/assets/a17e83d1-c0dc-4c16-b065-2d3995755255" /></p>
+<p>As we can see, the categories with the highest percentage of days are
+Very Active and Sedentary, the two extremes of the scale. This suggests
+that users mostly have days where they do lots of activity or very
+little. The “in between” categories of Lightly Active and Fairly Active
+have far less representation.</p>
+<p>Here are the results of the second query:
+<img width="892" height="129" alt="image" src="https://github.com/user-attachments/assets/1e28c735-7df5-4e35-b732-af276e708c60" /></p>
+<p>From these results, we can see that weekends and weekdays have almost
+identical average step counts and average active minutes across all
+users. This was quite a surprise to me, as before running the query I
+expected users to be more active on the weekends when most people are
+off work and have time for exercise.</p>
+<h4 id="activity-sleep-correlation">Activity-Sleep Correlation</h4>
+<p>I want to investigate the correlation between activity levels and
+sleep. My assumption is that users who are more active will have better
+sleep efficiency.</p>
+<pre><code>SELECT
+  CORR(total_active_minutes, sleep_efficiency) AS corr_activeminutes_efficiency,
+  CORR(steps, sleep_efficiency) AS corr_steps_efficiency,
+  CORR(total_active_minutes, sleep_minutes) AS corr_activeminutes_sleepminutes,
+  COUNT(*) AS n
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE sleep_efficiency IS NOT NULL;
+
+SELECT
+  activity_level,
+  ROUND(AVG(sleep_efficiency), 3) AS avg_sleep_efficiency,
+  ROUND(AVG(sleep_minutes), 0) AS avg_sleep_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary`
+WHERE sleep_efficiency IS NOT NULL
+GROUP BY activity_level
+ORDER BY avg_sleep_efficiency DESC;</code></pre>
+<p>Here are the results of the first query:
+<img width="940" height="65" alt="image" src="https://github.com/user-attachments/assets/dd1fde58-4c49-4216-a893-3d4407285c9f" /></p>
+<p>Once again, the results go against my expectations. Here we see that
+all correlations are mostly negligible (~0.04, ~0.11, ~0.07). This
+indicates that activity level doesn’t have a correlation with sleep
+based on our dataset. Note: n = 410 because the query specifies “WHERE
+sleep_efficiency IS NOT NULL”. Since the daily_summary table summarizes
+data from the activity table’ s 33 users with the sleep table’s 24
+users, there are null rows for any user who has activity data but no
+sleep data.</p>
+<p>Here are the results of the second query:
+<img width="894" height="214" alt="image" src="https://github.com/user-attachments/assets/86f00987-ba30-4e0b-9654-8fad2f95944b" /></p>
+<p>And as above, the results do not show any improvement in sleep
+efficiency on a day where a user is more active. In fact, the “Very
+Active” days have the lowest sleep efficiency, at 0.902. However, even
+this is an insignificant difference compared to the other activity
+levels. With these results I’m confident that activity level does not
+predict sleep efficiency.</p>
+<h4 id="engagement-activity-relationship">Engagement-Activity
+Relationship</h4>
+<p>Finally, I want to check if users with high engagement are more
+active. I would assume this is the case as someone who is enthusiastic
+about fitness will be more active and also more consistent with logging
+and tracking their activity.</p>
+<pre><code>-- Does engagement level relate to activity level? i.e. do highly-engaged
+-- users also tend to be more physically active, or is engagement
+-- (logging) independent of actual activity?
+SELECT
+  e.engagement_tier,
+  ROUND(AVG(d.steps), 0) AS avg_steps,
+  ROUND(AVG(d.total_active_minutes), 1) AS avg_active_minutes,
+  COUNT(*) AS num_days
+FROM `fitbit_fitness_tracker.daily_summary` d
+JOIN (
+  SELECT id,
+    CASE
+      WHEN days_logged_percentage &gt;= 0.75 THEN &#39;High&#39;
+      WHEN days_logged_percentage &gt;= 0.4 THEN &#39;Medium&#39;
+      ELSE &#39;Low&#39;
+    END AS engagement_tier
+  FROM `fitbit_fitness_tracker.user_engagement`
+) e ON d.id = e.id
+GROUP BY e.engagement_tier
+ORDER BY avg_steps DESC;</code></pre>
+<p>Here are the results:
+<img width="889" height="164" alt="image" src="https://github.com/user-attachments/assets/0252c2ea-84c4-4646-913e-ec05c4d8c746" /></p>
+<p>From these results we can see that the users with high engagement
+with logging their activity also have the highest average step count and
+active minutes count. Medium and low engagement users have noticeably
+lower activity levels. This shows that user engagement and activity are
+linked. It is important to note that causation cannot be determined from
+this data alone. Perhaps highly active users are more motivated to log
+consistently, or maybe consistent logging may encourage more activity.
+Either way, this result shows us that user engagement is a metric worth
+focusing on. </details>
+<details> <summary><h2>Phase 5: Share</h2></summary>
+<p>To communicate the findings from the Analyze phase to a non-technical
+audience, I created a set of visualizations in Tableau Desktop,
+connecting directly to my cleaned and transformed BigQuery tables. Given
+the audience for this case study is the Bellabeat executive team, I
+focused each visualization on a single, clearly stated finding, using
+minimal chart types and a consistent visual style (a single accent color
+palette, direct data labels, and plain-language titles) rather than
+dense, multi-metric dashboards.</p>
+<p>I produced five visualizations, each corresponding to one finding
+from the Analyze phase:</p>
+<h3 id="engagement-tiers">Engagement Tiers</h3>
+<p>This visualization shows the distribution of users across High,
+Medium, and Low engagement tiers, based on the percentage of days each
+user logged data. The large majority of users fall into the High tier,
+indicating that consistent tracker use is common once the user has a
+tracking device.</p>
+<p><img width="500" height="400" alt="Engagement" src="https://github.com/user-attachments/assets/c4c94e5c-bdca-4db6-baf4-58979844225a" /></p>
+<h3 id="activity-level-distribution">Activity Level Distribution</h3>
+<p>This visualization shows the number of user-days at each activity
+level (Sedentary through Very Active). The distribution is bimodal, with
+users more often having distinctly active or distinctly inactive days
+rather than a smooth middle ground.</p>
+<p><img width="500" height="400" alt="Activity" src="https://github.com/user-attachments/assets/426bbe44-ef27-401c-b84d-bf17344dea77" /></p>
+<h3 id="weekday-vs.-weekend-activity">Weekday vs. Weekend Activity</h3>
+<p>This visualization compares average steps and active minutes between
+weekdays and weekends. Both measures are nearly identical across the
+week, contradicting my expectation that activity would rise on the
+weekends.</p>
+<p><img width="500" height="400" alt="Weekday vs Weekend" src="https://github.com/user-attachments/assets/198eb348-cfe9-4c54-ae69-54f29ef230e7" /></p>
+<h3 id="sleep-efficiency-by-activity-level">Sleep Efficiency by Activity
+Level</h3>
+<p>This visualization compares average sleep efficiency across activity
+level groups. Efficiency is nearly constant regardless of activity
+level, indicating no meaningful relationship between physical activity
+and sleep efficiency in this dataset.</p>
+<p><img width="500" height="400" alt="Sleep" src="https://github.com/user-attachments/assets/6e1be908-51c6-4274-bd3d-e899f6b5e3d4" /></p>
+<h3 id="engagement-vs.-activity">Engagement vs. Activity</h3>
+<p>In my opinion this is the most important finding. This visualization
+compares average steps and active minutes across engagement tiers. Both
+metrics increase substantially with engagement tier, suggesting that
+consistent device usage and physical activity are closely linked.
+However, causation cannot be determined from this data alone.</p>
+<p><img width="500" height="400" alt="Engagement vs Activity" src="https://github.com/user-attachments/assets/d78e6588-bc4e-465d-8637-eb17611b29fa" /></p>
+</details>
+<details> <summary><h2>Phase 6: Act</h2></summary>
+<h3 id="conclusion">Conclusion</h3>
+<p>This analysis set out to identify trends in smart device usage and
+consider how those trends could inform Bellabeat’s marketing strategy
+for the Leaf. The data shows that once users adopt a fitness tracker,
+consistent day-to-day use is the norm rather than the exception, and
+that this consistency is closely tied to physical activity levels, as
+highly engaged users are also the most active. Activity itself tends
+toward extremes (very active or largely inactive) rather than a steady
+middle ground, and is remarkably stable across the week, with no
+meaningful difference between weekdays and weekends. Sleep efficiency
+showed no measurable relationship to activity level in this dataset.
+Together, these findings point toward user engagement and habit
+formation, rather than activity intensity alone, as the more promising
+lever for Bellabeat’s marketing strategy.</p>
+<h3 id="top-recommendations">Top Recommendations</h3>
+<h4
+id="prioritize-marketing-messaging-around-consistent-everyday-use-rather-than-activity-intensity.">1.
+Prioritize marketing messaging around consistent, everyday use rather
+than activity intensity.</h4>
+<p>The strongest finding in this analysis was the link between
+engagement (how consistently a user logs data) and physical activity.
+Highly engaged users averaged 9,040 steps/day versus 5,117 for the least
+engaged, a 77% difference. Since Leaf tracks activity, sleep, and stress
+as an integrated part of daily life, marketing should emphasize building
+a daily tracking habit rather than promoting the Leaf primarily as a
+tool for intense workouts. Campaigns built around routine and
+consistency (e.g. “make it part of your day”) are more likely to
+resonate with how users actually engage with the product.</p>
+<h4
+id="focus-retention-efforts-on-the-first-one-to-two-weeks-of-device-ownership.">2.
+Focus retention efforts on the first one to two weeks of device
+ownership.</h4>
+<p>The one clearly low-engagement user in this dataset showed activity
+concentrated in the first few days of the study period, consistent with
+early dropout rather than gradual disengagement. While this is a single
+case and not something to generalize broadly from, it aligns with
+well-documented patterns in wearable device adoption, where early weeks
+are typically the highest-risk period for abandonment. Bellabeat should
+consider strengthening onboarding with features such as early check-ins,
+achievable early goals, or app prompts in the first two weeks. This
+would convert early interest into the sustained daily habit that the
+engagement findings show is achievable and valuable.</p>
+<h4
+id="do-not-tie-campaign-timing-to-weekdayweekend-activity-assumptions.">3.
+Do not tie campaign timing to weekday/weekend activity assumptions.</h4>
+<p>Average steps and active minutes were nearly identical between
+weekdays and weekends, despite the common assumption that increased free
+time on weekends leads to higher activity. This suggests Bellabeat’s
+marketing does not need separate weekday- and weekend-specific activity
+campaigns; a consistent, always-on messaging approach around daily
+habit-building (per recommendation 1) is better supported by the data
+than day-specific timing strategies.</p>
+<h3 id="limitations-and-further-research">Limitations and Further
+Research</h3>
+<p>This analysis is based on a small sample of 33 users over roughly one
+month, which limits how confidently these findings can be generalized to
+Bellabeat’s broader customer base. The dataset also lacks demographic
+information, which would be particularly relevant given Bellabeat’s
+focus on women’s health. Weight and heart rate data were excluded from
+the main analysis due to limited user coverage, and could be explored
+separately with a more complete dataset. Notably, this analysis found no
+relationship between activity level and sleep efficiency, which
+contradicts common assumptions about exercise and sleep quality. A
+longer time period or larger sample might reveal a relationship this
+dataset was not able to detect, and would be a valuable area for
+Bellabeat to investigate directly using its own more extensive Leaf user
+data.</p>
+</details>
+
+</body>
+</html>
