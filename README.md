@@ -551,3 +551,6 @@ This analysis is based on a small sample of 33 users over roughly one month, whi
 
 </details>
 
+## How I used AI
+The analysis, SQL queries, Tableau visualizations, findings and written write-up are all my own work. I used AI (Claude) only to design and build the [styled web version](https://conormcguire.github.io/bellabeat-case-study/) of this write-up; the content is the same as my original.
+

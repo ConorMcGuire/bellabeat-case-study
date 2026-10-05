@@ -216,6 +216,13 @@
       .rec .rec-num { top: 20px; left: 24px; }
     }
 
+    .ai-note {
+      margin-top: 40px; padding: 20px 24px; border-radius: var(--radius);
+      background: var(--leaf-tint); border: 1px solid var(--border);
+    }
+    .ai-note h2 { font-size: 1.1rem; margin-bottom: 6px; }
+    .ai-note p { color: var(--muted); }
+
     .footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 28px 0 48px; color: var(--muted); font-size: .88rem; }
     .footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
   </style>
@@ -801,6 +808,11 @@ ORDER BY avg_steps DESC;</code></pre>
 
       <h3>Limitations and Further Research</h3>
       <p>This analysis is based on a small sample of 33 users over roughly one month, which limits how confidently these findings can be generalized to Bellabeat's broader customer base. The dataset also lacks demographic information, which would be particularly relevant given Bellabeat's focus on women's health. Weight and heart rate data were excluded from the main analysis due to limited user coverage, and could be explored separately with a more complete dataset. Notably, this analysis found no relationship between activity level and sleep efficiency, which contradicts common assumptions about exercise and sleep quality. A longer time period or larger sample might reveal a relationship this dataset was not able to detect, and would be a valuable area for Bellabeat to investigate directly using its own more extensive Leaf user data.</p>
+    </section>
+
+    <section class="ai-note" id="ai">
+      <h2>How I used AI</h2>
+      <p>The analysis, SQL queries, Tableau visualizations, findings and written write-up are all my own work. I used AI (Claude) only to design and build this styled web version of the write-up; the content is the same as my original.</p>
     </section>
   </main>
 
